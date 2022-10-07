@@ -6,3 +6,11 @@
 
 # ignore all pycache
 *.pyc
+
+checkpoint
+
+*/lightning_logs
+
+*.tf*
+
+**/__pycache__/
