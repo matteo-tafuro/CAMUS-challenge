@@ -121,5 +121,5 @@ class UNet(nn.Module):
         return logits
 
     def forward_ssl(self, x):
-        x = F.avg_pool2d(self.encoder(x), kernel_size=8, stride=8)
-        return x.flatten().reshape(-1, 4096)
+        x = F.avg_pool2d(self.encoder(x), kernel_size=16, stride=16)
+        return x.flatten().reshape(-1, 2048)

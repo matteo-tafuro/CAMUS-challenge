@@ -22,7 +22,7 @@ def Projector(dims):
 
 class VICReg(nn.Module):
     def __init__(self, encoder,
-        projector_dims=(4096, 4096, 4096, 8192), siamese=True,
+        projector_dims=(2048, 4096, 4096, 8192), siamese=True,
         global_inv_coeff=25.0, std_coeff=25.0, cov_coeff=1.0, exp_coeff=4.0,
         **encoder_args
     ):
