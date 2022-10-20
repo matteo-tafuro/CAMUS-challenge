@@ -27,3 +27,37 @@ he goal is to leverage the unlabeled in-between frames of the recordings to help
 
 ### nnUNet implementation
 
+
+## Results
+In the figure below, we can see comparison of different results for different models. 
+
+![Text](https://github.com/lutai14/CAMUS-challenge/blob/main/imgs/results_comparison.png)
+
+### U-Net results
+U-Net performs remarkably well to be the simplest model
+of our study, and marks a competitive baseline performance. We can also see that SSL training didn't much improve on the results, and had acutally induced some distortions at some masks. 
+
+
+### LadderNet results
+LadderNet, despite the architectural improvements, does
+not show significant deviations from the results of U-Net in
+any metric, with a notable exception being the EF correla-
+tion coefficient. Along the same lines, the U-Net model aug-
+mented with SSL pre-training does not reveal remarkable im-
+provements over U-Net. Contrarily, it results in a slight degra-
+dation of the EF correlation coefficient. 
+
+### nnU-Net results
+The nnU-Net exhibits a superior performance, achieving
+incredibly high values for the DICE index and all of the clini-
+cal metrics (EF, LVEDV and LVESV). As the method makes use
+of parameters optimization on top of a U-Net, these improve-
+ments were expected. Nonetheless, the distance-based metric
+seem off and the Hausdorff distance (dh) is an order of magni-
+tude larger than the other approaches. We have not been able
+to investigate the causes of the problem, since the evaluation
+on the test set is performed by a third party on a closed-source
+platform. We suspect a problem in the processing of our seg-
+mentation masks, because the evaluation platform computed
+the metrics for only 33 of the 50 test patients. It is notewor-
+thy that the same submission format was used for all models,
