@@ -49,8 +49,9 @@ def convert_array_to_nifti(img: np.array, output_filename_truncated: str, spacin
     # image is now (c, x, x, z) where x=1 since it's 2d
     if is_seg:
         assert img.shape[0] == 1, 'segmentations can only have one color channel, not sure what happened here'
-    print("shape", img.shape)
-    exit()
+
+    things = []
+
     for j, i in enumerate(img):
 
         if is_seg:
@@ -59,9 +60,15 @@ def convert_array_to_nifti(img: np.array, output_filename_truncated: str, spacin
         itk_img = sitk.GetImageFromArray(i)
         itk_img.SetSpacing(list(spacing)[::-1])
         if not is_seg:
-            sitk.WriteImage(itk_img, output_filename_truncated + "_%04.0d.nii.gz" % j)
+            # sitk.WriteImage(itk_img, output_filename_truncated + "_%04.0d.nii.gz" % j)
+
+            x = os.path.basename(output_filename_truncated + "_%04.0d.nii.gz" % j)
+            things.append(x)
         else:
-            sitk.WriteImage(itk_img, output_filename_truncated + ".nii.gz")
+            pass
+            # sitk.WriteImage(itk_img, output_filename_truncated + ".nii.gz")
+
+    return things
 
 
 if __name__ == '__main__':
@@ -113,6 +120,7 @@ if __name__ == '__main__':
     maybe_mkdir_p(target_labelsTr)
 
 
+
     for i, (data,label) in tqdm(enumerate(zip(frames2ch[train_idx], masks2ch[train_idx]))):
         unique_name = f"frame_{i}"
 
@@ -128,11 +136,14 @@ if __name__ == '__main__':
 
         # this utility will convert 2d images that can be read by skimage.io.imread to nifti. You don't need to do anything.
         # if this throws an error for your images, please just look at the code for this function and adapt it to your needs
-        convert_array_to_nifti(data, output_image_file, is_seg=False)
+        arr = convert_array_to_nifti(data, output_image_file, is_seg=False)
+        filenames += arr
+        # # the labels are stored as 0: background, 255: road. We need to convert the 255 to 1 because nnU-Net expects
+        # # the labels to be consecutive integers. This can be achieved with setting a transform
+        # convert_array_to_nifti(label, output_seg_file, is_seg=True)
 
-        # the labels are stored as 0: background, 255: road. We need to convert the 255 to 1 because nnU-Net expects
-        # the labels to be consecutive integers. This can be achieved with setting a transform
-        convert_array_to_nifti(label, output_seg_file, is_seg=True)
+    filenames = []
+
 
     for i, (data, label) in tqdm(enumerate(zip(frames2ch[test_idx], masks2ch[test_idx]))):
         unique_name = f"frame_{i}"

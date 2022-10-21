@@ -6,6 +6,8 @@ import h5py
 import cv2
 
 # Path to the training folder
+from sklearn.model_selection import train_test_split
+
 train_path = "../data/training/"
 
 def mhd_to_array(path):
@@ -21,7 +23,10 @@ train_4ch_frames_list = sorted(os.listdir(train_path + "4ch/frames/"))
 train_4ch_masks_list = sorted(os.listdir(train_path + "4ch/masks/"))
 
 train_all_frames_list = sorted(os.listdir(train_path + "2ch/frames/") + os.listdir(train_path + "4ch/frames/"))
-train_all_masks_list = sorted(os.listdir(train_path + "2ch/masks/") + os.listdir(train_path + "4ch/masks/"))
+train_idx, test_idx = train_test_split(np.arange(1800), random_state=42)
+l = list(np.array([x for x in train_all_frames_list if "mhd" in x])[test_idx])
+print(l)
+exit()
 
 # Create hierarchical h5py file, ready to be filled with 4 datasets
 f = h5py.File("../data/image_dataset.hdf5", "w")

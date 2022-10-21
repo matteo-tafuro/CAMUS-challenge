@@ -26,7 +26,8 @@ he goal is to leverage the unlabeled in-between frames of the recordings to help
 ### LadderNet implementation
 
 ### nnUNet implementation
-
+For nnUnet, please take a look at `create_camus_dataset.py` to convert to hdf5, `create_CAMUS_task_from_hdf5.py` to convert to nnU-Net format, `perpare_submission.py` to convert back to the CAMUS dataset format.
+For instructions on how to run the task, please see the detailed instructions in the [medium article](https://medium.com/miccai-educational-initiative/nnu-net-the-no-new-unet-for-automatic-segmentation-8d655f3f6d2a).
 
 ## Results
 In the figure below, we can see comparison of different results for different models. 

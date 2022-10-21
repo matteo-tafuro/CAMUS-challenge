@@ -72,24 +72,39 @@ def convert_array_to_nifti(img: np.array, output_filename_truncated: str, spacin
             sitk.WriteImage(itk_img, output_filename_truncated + ".nii.gz")
 
 
-test_path = "../data/testing/"
-test_all_frames_list = sorted(glob.glob(test_path + "*"))
+# test_path = "../data/testing/"
+# test_all_frames_list = sorted(glob.glob(test_path + "*"))
+#
+# output_path = "testset_nifti/"
+#
+# os.makedirs(output_path, exist_ok=True)
+#
+#
+# # Iterate over images and save them into the corresponding dataset
+# for folder in tqdm(test_all_frames_list):
+#     for i in os.listdir(folder):
+#         if "mhd" in i and "sequence" not in i:
+#             array = mhd_to_array(os.path.join(folder, i))
+#             new_array = cv2.resize(array[0, :, :], dsize=(384, 384), interpolation=cv2.INTER_CUBIC)
+#             new_array = np.reshape(new_array, (384, 384))
+#             new_array = new_array / 255
+#             convert_array_to_nifti(new_array, output_path+ i[:-4])
 
-output_path = "testset_nifti/"
+
+test_all_frames_list = sorted(glob.glob("../data/training/2ch/frames/*.mhd")) + sorted(glob.glob("../data/training/4ch/frames/*.mhd"))
+
+output_path = "trainset_nifti/"
 
 os.makedirs(output_path, exist_ok=True)
 
 
 # Iterate over images and save them into the corresponding dataset
-for folder in tqdm(test_all_frames_list):
-    for i in os.listdir(folder):
-        if "mhd" in i and "sequence" not in i:
-            array = mhd_to_array(os.path.join(folder, i))
-            new_array = cv2.resize(array[0, :, :], dsize=(384, 384), interpolation=cv2.INTER_CUBIC)
-            new_array = np.reshape(new_array, (384, 384))
-            new_array = new_array / 255
-            convert_array_to_nifti(new_array, output_path+ i[:-4])
-
-
+for file in tqdm(test_all_frames_list):
+    file_base = os.path.basename(file)
+    array = mhd_to_array(file)
+    new_array = cv2.resize(array[0, :, :], dsize=(384, 384), interpolation=cv2.INTER_CUBIC)
+    new_array = np.reshape(new_array, (384, 384))
+    new_array = new_array / 255
+    convert_array_to_nifti(new_array, output_path+ file_base[:-4])
 
 
